@@ -1,8 +1,11 @@
 package Server;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -138,6 +141,18 @@ public class FTPSession {
 	}
 	
 	private void handleSYST() {
-		this.sendMsgToClient("215 UNIX Type: L8");
+		this.sendMsgToClient("215 Windows Type");
+	}
+	
+	private void handlePUT(){
+		try {
+			FileInputStream fis = new FileInputStream("fiche.txt");
+			byte b[] = new byte[2000];
+			fis.read(b, 0, b.length);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
