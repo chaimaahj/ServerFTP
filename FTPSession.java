@@ -19,14 +19,14 @@ public class FTPSession {
 		NOT_LOGGED, ENTERED_LOGIN, LOGGED
 	}
 	
-	private Socket commandSocket;
+	private Socket socket;
 	private PrintWriter commandOutWriter;
 	private BufferedReader commandIn;
 
 	
 	
-	public String username = "";
-	public String password = "";
+	public String username = "chaimaa";
+	public String password = "pass";
 	
 
 	public Status status = Status.NOT_LOGGED;
@@ -35,18 +35,21 @@ public class FTPSession {
 	public boolean readyToExit = false;
 	
 	public FTPSession(Socket sock) {
-		this.commandSocket = sock;
+		this.socket = sock;
 		
 	}
 	
 	public void start() {
 		try {
-			
-			this.commandIn = new BufferedReader(new InputStreamReader(commandSocket.getInputStream()));
-			this.commandOutWriter = new PrintWriter(commandSocket.getOutputStream(), true);
+			//récupérer la requête du client
+			this.commandIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			//formater en texte
+			this.commandOutWriter = new PrintWriter(socket.getOutputStream(), true);
 			
 			this.sendMsgToClient("220 Service ready");
+			//différent de false 
 			while(!this.readyToExit) {
+				//lire la commande récupéré dans le bufferedReader
 				this.executeCommand(this.commandIn.readLine());
 			}
 			
@@ -59,7 +62,7 @@ public class FTPSession {
 			try {
 				commandIn.close();
 				this.commandOutWriter.close();
-				this.commandSocket.close();
+				this.socket.close();
 				
 				this.debug("Sockets fermees");
 			} catch (IOException e) {
@@ -78,8 +81,10 @@ public class FTPSession {
 
 	
 	private void executeCommand(String c) {
+		//renvoyer l'index du premier espace
 		int index = c.indexOf(" ");
 		String command = ((index == -1) ? c.toUpperCase() : c.substring(0, index).toUpperCase());
+		//récupérer le reste de la requête dans une autre chaine de caractère
 		String args = (( index == -1) ? null : c.substring(index+1, c.length()));
 		
 		this.debug("Command: "+command + " Args: "+ args);
@@ -117,7 +122,7 @@ public class FTPSession {
 	}
 	
 	private void handlePASS(String password) {
-		if(this.status  == Status.ENTERED_LOGIN && password.equals("chaimaa")) {
+		if(this.status  == Status.ENTERED_LOGIN && password.equals("pass")) {
 			this.status = Status.LOGGED;
 			this.sendMsgToClient("230 Welcome to CHAIMAA-FTP");
 			this.sendMsgToClient("230 Logged in successfully");
