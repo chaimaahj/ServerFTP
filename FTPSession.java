@@ -13,9 +13,7 @@ import java.net.UnknownHostException;
 
 public class FTPSession {
 	
-	private enum  TransferType {
-		ASCII, BINARY
-	}
+	
 	
 	private enum Status {
 		NOT_LOGGED, ENTERED_LOGIN, LOGGED
@@ -30,7 +28,7 @@ public class FTPSession {
 	public String username = "";
 	public String password = "";
 	
-	public TransferType transferMode = TransferType.ASCII;
+
 	public Status status = Status.NOT_LOGGED;
 	
 	public boolean anonymousMode = false;
