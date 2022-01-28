@@ -25,9 +25,7 @@ public class FTPSession {
 	private PrintWriter commandOutWriter;
 	private BufferedReader commandIn;
 
-	String rootDirectory = "";
-	String currDirectory;
-	String fileSeparator = "/";
+	
 	
 	public String username = "";
 	public String password = "";
@@ -40,8 +38,7 @@ public class FTPSession {
 	
 	public FTPSession(Socket sock) {
 		this.commandSocket = sock;
-		this.rootDirectory = System.getProperty("user.dir");
-		this.currDirectory = System.getProperty("user.dir");
+		
 	}
 	
 	public void start() {
